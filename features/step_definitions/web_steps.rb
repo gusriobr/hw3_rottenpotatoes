@@ -138,6 +138,28 @@ Then /^(?:|I )should not see \/([^\/]*)\/$/ do |regexp|
   end
 end
 
+Then /^I should see$/ do |movies_table|
+  # table is a Cucumber::Ast::Table
+   movies_table.hashes.each do |movie| 
+    if page.respond_to? :should
+      page.should have_content(movie["title"])
+    else
+      assert page.has_content?(movie["title"])
+    end
+  end
+end
+
+Then /^I should not see$/ do |movies_table|
+  # table is a Cucumber::Ast::Table
+   movies_table.hashes.each do |movie| 
+    if page.respond_to? :should
+      page.should have_no_content(movie["title"])
+    else
+      assert page.has_no_content?(movie["title"])
+    end
+  end
+end
+
 Then /^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/ do |field, parent, value|
   with_scope(parent) do
     field = find_field(field)
