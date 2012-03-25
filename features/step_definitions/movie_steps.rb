@@ -1,8 +1,8 @@
 # Add a declarative step here for populating the DB with movies.
 
 Given /the following movies exist/ do |movies_table|
-  movies_table.hashes.each do |movie| 
-      Movie.create!(movie)
+  movies_table.hashes.each do |movie|
+    Movie.create!(movie)
   end
 end
 
@@ -10,8 +10,8 @@ end
 #   on the same page
 
 Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
-  #  ensure that that e1 occurs before e2.
-  #  page.content  is the entire content of the page as a string.
+#  ensure that that e1 occurs before e2.
+#  page.content  is the entire content of the page as a string.
   assert false, "Unimplmemented"
 end
 
@@ -20,7 +20,27 @@ end
 #  "When I check the following ratings: G"
 
 When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
-  # HINT: use String#split to split up the rating_list, then
-  #   iterate over the ratings and reuse the "When I check..." or
-  #   "When I uncheck..." steps in lines 89-95 of web_steps.rb
+# HINT: use String#split to split up the rating_list, then
+#   iterate over the ratings and reuse the "When I check..." or
+#   "When I uncheck..." steps in lines 89-95 of web_steps.rb
+  all_ratings = ["G", "PG", "PG-13", "NC-17", "R" ]
+  ratings_array = rating_list.gsub(/([ ])/, '') .split(',')
+
+  if uncheck != "" then
+    precheck = ""
+    preuncheck = "un"
+  else
+    precheck = "un"
+    preuncheck = ""
+  end
+
+  all_ratings.each{ |r|
+    if ratings_array.include?(r) then
+      step precheck+"check \"ratings_#{r}\""
+    else
+      step preuncheck+"check \"ratings_#{r}\""
+    end
+  }
+
 end
+
