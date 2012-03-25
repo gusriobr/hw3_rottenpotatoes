@@ -12,18 +12,28 @@ end
 Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
 #  ensure that that e1 occurs before e2.
 #  page.content  is the entire content of the page as a string.
-  assert false, "Unimplmemented"
+  #matches = page.body.match(/.*(#{e1}).*(#{e2}).*/)
+  matches = page.body.match(/<td>#{e1}<\/td>(.)*<td>#{e2}<\/td>/m)
+  if matches == nil then
+    num_matches = 0
+  else
+    num_matches = matches.length
+  end
+
+  num_matches.should > 0
+
+#  assert page.body.match(/.*(Aladin).*(Amelie).*/) != nil
+#  assert page.body.match(/.*(#{e1}).*(#{e2}).*/) != nil
+
 end
 
-PAGES_TABLE_ROW_SELECTOR = " tr"
-
 Then /I should see all of the movies/ do
-   #page.should have_selector PAGES_TABLE_ROW_SELECTOR, count: pages_count
-  #page.should have_selector('table tr', :count => Movie.count)
+#page.should have_selector PAGES_TABLE_ROW_SELECTOR, count: pages_count
+#page.should have_selector('table tr', :count => Movie.count)
   num_movies = Movie.count
   num_rows = find("table#movies").all('tr').count
   num_movies.should == num_rows - 1 # except header
-   #all("table#movies tr").count 
+#all("table#movies tr").count
 end
 
 # Make it easier to express checking or unchecking several boxes at once
