@@ -15,6 +15,17 @@ Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
   assert false, "Unimplmemented"
 end
 
+PAGES_TABLE_ROW_SELECTOR = " tr"
+
+Then /I should see all of the movies/ do
+   #page.should have_selector PAGES_TABLE_ROW_SELECTOR, count: pages_count
+  #page.should have_selector('table tr', :count => Movie.count)
+  num_movies = Movie.count
+  num_rows = find("table#movies").all('tr').count
+  num_movies.should == num_rows - 1 # except header
+   #all("table#movies tr").count 
+end
+
 # Make it easier to express checking or unchecking several boxes at once
 #  "When I uncheck the following ratings: PG, G, R"
 #  "When I check the following ratings: G"
